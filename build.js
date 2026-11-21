@@ -3,8 +3,9 @@
 // and status.json (health report). If anything looks wrong it exits with an error,
 // the old catalog stays in place and GitHub emails the repository owner.
 const fs = require('fs');
-const TOKEN = process.env.KONIMBO_TOKEN;
+const TOKEN = String(process.env.KONIMBO_TOKEN || '').trim().replace(/^["']|["']$/g, '');
 if (!TOKEN) { console.error('Missing KONIMBO_TOKEN secret'); process.exit(1); }
+console.log('token check: length ' + TOKEN.length + ', hex only: ' + /^[0-9a-f]+$/i.test(TOKEN) + ' (expected 64 / true)');
 const API = 'https://api.konimbo.co.il/v1/items';
 const SITE = 'https://www.perfectreef.co.il';
 const MIN_ITEMS = +process.env.MIN_ITEMS || 3500;
@@ -20,7 +21,7 @@ async function call(params, tries = 5) {
     const h = n => r.headers.get(n);
     const cur = +h('x-rate-limit-current') || 0, max = +h('x-rate-limit-maximum') || 100;
     if (r.status === 401 && cur >= max - 1) { console.log('rate limit reached, waiting 10 min'); await sleep(610000); continue; }
-    if (!r.ok) { console.log('HTTP ' + r.status + ', retry ' + (k + 1)); await sleep(30000); continue; }
+    if (!r.ok) { let t = ''; try { t = (await r.text()).replace(/[0-9a-f]{20,}/gi, '[x]').slice(0, 200); } catch (e) {} console.log('HTTP ' + r.status + ', retry ' + (k + 1) + ' | ' + t + ' | rate ' + cur + '/' + max); if (r.status === 401 && k >= 1) break; await sleep(30000); continue; }
     const body = await r.json();
     // keep well under 100 calls / 10 minutes
     await sleep(cur > max - 10 ? 60000 : 6500);
