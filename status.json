@@ -1,0 +1,52 @@
+{
+ "started": "2026-11-22T08:29:30.215Z",
+ "ok": true,
+ "checks": {
+  "total_header": 4532,
+  "per_page": 20,
+  "link_header_present": true,
+  "fields_first_item": [
+   "id",
+   "updated_at",
+   "title",
+   "store_category_title",
+   "visible",
+   "brand",
+   "slug",
+   "images"
+  ],
+  "page_param_works": true,
+  "items_downloaded": 4532,
+  "non_visible_returned": 0,
+  "url_samples": [
+   {
+    "id": "4626444",
+    "status": 200
+   },
+   {
+    "id": "4727608",
+    "status": 200
+   },
+   {
+    "id": "6080267",
+    "status": 200
+   },
+   {
+    "id": "8308249",
+    "status": 200
+   },
+   {
+    "id": "9369434",
+    "status": 200
+   }
+  ],
+  "image_variants": {
+   "thumb": 403,
+   "small": 403,
+   "medium": 403
+  }
+ },
+ "finished": "2026-11-22T08:56:21.730Z",
+ "count": 4532,
+ "image_variant": "original"
+}
